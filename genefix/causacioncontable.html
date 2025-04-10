@@ -247,90 +247,81 @@
                                         <!-- ID Documento -->
                                         <div class="form-group col-12">
                                             <label for="id_documento">ID Documento</label>
-                                            <input type="text" class="form-control" id="id_documento"
-                                                value="" required>
+                                            <input type="text" class="form-control" id="id_documento" value="" required>
                                         </div>
 
                                         <!-- ID Comprobante -->
                                         <div class="form-group col-12">
                                             <label for="id_comprobante">ID Comprobante</label>
-                                            <input type="text" class="form-control" id="id_comprobante"
-                                                value="" required>
+                                            <input type="text" class="form-control" id="id_comprobante" value=""
+                                                required>
                                         </div>
 
                                         <!-- ID NIT -->
                                         <div class="form-group col-12">
                                             <label for="id_nit">ID NIT</label>
-                                            <input type="text" class="form-control" id="id_nit"
-                                                value="" required>
+                                            <input type="text" class="form-control" id="id_nit" value="" required>
                                         </div>
 
                                         <!-- Fecha -->
                                         <div class="form-group col-12">
                                             <label for="fecha">Fecha</label>
-                                            <input type="date" class="form-control" id="fecha"
-                                                value="" required>
+                                            <input type="date" class="form-control" id="fecha" value="" required>
                                         </div>
 
                                         <!-- Fecha Manual -->
                                         <div class="form-group col-12">
                                             <label for="fecha_manual">Fecha Manual</label>
-                                            <input type="date" class="form-control" id="fecha_manual"
-                                                value="" required>
+                                            <input type="date" class="form-control" id="fecha_manual" value="" required>
                                         </div>
 
                                         <!-- ID Cuenta -->
                                         <div class="form-group col-12">
                                             <label for="id_cuenta">ID Cuenta</label>
-                                            <input type="text" class="form-control" id="id_cuenta"
-                                                value="" required>
+                                            <input type="text" class="form-control" id="id_cuenta" value="" required>
                                         </div>
 
                                         <!-- Valor -->
                                         <div class="form-group col-12">
                                             <label for="valor">Valor</label>
-                                            <input type="number" class="form-control" id="valor"
-                                                value="" required>
+                                            <input type="number" class="form-control" id="valor" value="" required>
                                         </div>
 
                                         <!-- Tipo -->
                                         <div class="form-group col-12">
                                             <label for="tipo">Tipo</label>
-                                            <input type="text" class="form-control" id="tipo"
-                                                value="" required>
+                                            <input type="text" class="form-control" id="tipo" value="" required>
                                         </div>
 
                                         <!-- Concepto -->
                                         <div class="form-group col-12">
                                             <label for="concepto">Concepto</label>
-                                            <input type="text" class="form-control" id="concepto"
-                                                value="" required>
+                                            <input type="text" class="form-control" id="concepto" value="" required>
                                         </div>
 
                                         <!-- Documento Referencia -->
                                         <div class="form-group col-12">
                                             <label for="documento_referencia">Documento Referencia</label>
-                                            <input type="text" class="form-control" id="documento_referencia"
-                                                value="" required>
+                                            <input type="text" class="form-control" id="documento_referencia" value=""
+                                                required>
                                         </div>
 
                                         <!-- Token -->
                                         <div class="form-group col-12">
                                             <label for="token">Token</label>
-                                            <input type="text" class="form-control" id="token"
-                                                value="" required>
+                                            <input type="text" class="form-control" id="token" value="" required>
                                         </div>
 
                                         <!-- Extra -->
                                         <div class="form-group col-12">
                                             <label for="extra">Extra</label>
-                                            <input type="text" class="form-control" id="extra"
-                                                value="" required>
+                                            <input type="text" class="form-control" id="extra" value="" required>
                                         </div>
 
                                         <!-- Submit Button -->
                                         <div class="col-12">
-                                            <button type="submit" class="btn_acciones btn btn-primary btn-block">Guardar</button>
+                                            <button type="submit"
+                                                class="btn_acciones btn btn-primary btn-block">Guardar</button>
                                         </div>
                                     </div>
                                 </form>
@@ -401,6 +392,67 @@
     <script src="assets/js/uikit.min.js"></script>
 
     <script src="assets/js/plugins/apexcharts.min.js"></script>
+
+    <script>
+        const datos = {
+            documents: [
+                { 
+                    "id_documento": "00000004", 
+                    "id_comprobante": 677, 
+                    "id_nit": 1529, 
+                    "fecha":  "2024-03-19 08:00:00", 
+                    "fecha_manual": "2024-03-19", 
+                    "id_cuenta": 6156140, "valor": 
+                    "100", "tipo": 1, 
+                    "concepto": "ABONO CUENTA TEST VENTAS MOSTRADOR", 
+                    "documento_referencia": "000001-3", 
+                    "token": "f55932f7d912352222457841asasas", 
+                    "extra": "RECIBO_GENERADO_VIA_API" 
+                }, 
+                {   
+                    "id_documento": "00000004", 
+                    "id_comprobante": 677, 
+                    "id_nit": 1529, 
+                    "fecha": "2024-03-19 08:00:00", 
+                    "fecha_manual": "2024-03-19", 
+                    "id_cuenta": 6156006, 
+                    "valor": "100", 
+                    "tipo": 0, "concepto":
+                    "ABONO CUENTA TEST VENTAS MOSTRADOR", 
+                    "documento_referencia": "000001-3", 
+                    "token": "f55932f7d912352222457841asasas", 
+                    "extra": "RECIBO_GENERADO_VIA_API" 
+                }
+            ],
+        };
+
+        const enviarDatos = async () => {
+            const formData = new FormData();
+
+            // Agregar datos manualmente
+            Object.keys(datos).forEach((key) => {
+                formData.append(key, datos[key]);
+            });
+	// https://webhook.site/d98cac13-dd5d-4b2e-b2d5-905ac9e7390f
+            try {
+                const response = await fetch('https://pepito.free.beeceptor.com', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('Respuesta del servidor:', data);
+                } else {
+                    console.error('Error en la petición');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
+
+        enviarDatos();
+    </script>
 
 </body>
 
