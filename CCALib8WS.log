@@ -1,0 +1,381 @@
+{
+	"info": {
+		"_postman_id": "0a5d43f3-2df0-480e-aac5-d58b6629a012",
+		"name": "API GENEFIX",
+		"description": "# 📄 Get started here\n\nThis template contains a boilerplate for documentation that you can quickly customize and reuse.\n\n## 🔖 How to use this template\n\n- Replace the content given brackets (()) with your API's details.\n    \n- Tips are formatted in `codespan` - feel free to read and remove them.\n    \n\n---\n\n`Start with a brief overview of what your API offers.`\n\nThe ((product name)) provides many API products, tools, and resources that enable you to ((add product value here)).\n\n`You can also list the APIs you offer, link to the relevant pages, or do both in this section.`\n\n## **Getting started guide**\n\n`List the steps or points required to start using your APIs. Make sure to cover everything required to reach success with your API as quickly as possible.`\n\nTo start using the ((add APIs here)), you need to -\n\n`The points given below are from The Postman API's documentation. You can reference it to write your own getting started guide.`\n\n- You must use a valid API Key to send requests to the API endpoints. You can get your API key from Postman's [integrations dashboard](https://go.postman.co/settings/me/api-keys).\n    \n- The API has [rate and usage limits](https://learning.postman.com/docs/developer/postman-api/postman-api-rate-limits/).\n    \n- The API only responds to HTTPS-secured communications. Any requests sent via HTTP return an HTTP 301 redirect to the corresponding HTTPS resources.\n    \n- The API returns request responses in JSON format. When an API request returns an error, it is sent in the JSON response as an error key.\n    \n\n## Authentication\n\n`Add details on the authorization keys/tokens required, steps that cover how to get them, and the relevant error codes.`\n\nThe ((product name)) API uses ((add your API's authorization type)) for authentication.\n\n`The details given below are from the Postman API's documentation. You can reference it to write your own authentication section.`\n\nPostman uses API keys for authentication. You can generate a Postman API key in the [API keys](https://postman.postman.co/settings/me/api-keys) section of your Postman account settings.\n\nYou must include an API key in each request to the Postman API with the X-Api-Key request header.\n\n### Authentication error response\n\nIf an API key is missing, malformed, or invalid, you will receive an HTTP 401 Unauthorized response code.\n\n## Rate and usage limits\n\n`Use this section to cover your APIs' terms of use. Include API limits, constraints, and relevant error codes, so consumers understand the permitted API usage and practices.`\n\n`The example given below is from The Postman API's documentation. Use it as a reference to write your APIs' terms of use.`\n\nAPI access rate limits apply at a per-API key basis in unit time. The limit is 300 requests per minute. Also, depending on your plan, you may have usage limits. If you exceed either limit, your request will return an HTTP 429 Too Many Requests status code.\n\nEach API response returns the following set of headers to help you identify your use status:\n\n| Header | Description |\n| --- | --- |\n| `X-RateLimit-Limit` | The maximum number of requests that the consumer is permitted to make per minute. |\n| `X-RateLimit-Remaining` | The number of requests remaining in the current rate limit window. |\n| `X-RateLimit-Reset` | The time at which the current rate limit window resets in UTC epoch seconds. |\n\n### 503 response\n\nAn HTTP `503` response from our servers indicates there is an unexpected spike in API access traffic. The server is usually operational within the next five minutes. If the outage persists or you receive any other form of an HTTP `5XX` error, [contact support](https://support.postman.com/hc/en-us/requests/new/).\n\n### **Need some help?**\n\n`Add links that customers can refer to whenever they need help.`\n\nIn case you have questions, go through our tutorials ((link to your video or help documentation here)). Or visit our FAQ page ((link to the relevant page)).\n\nOr you can check out our community forum, there’s a good chance our community has an answer for you. Visit our developer forum ((link to developer forum)) to review topics, ask questions, and learn from others.\n\n`You can also document or add links to libraries, code examples, and other resources needed to make a request.`",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "472664"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "check-document",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"documento\": \"14297510\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/check-document",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"check-document"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"document\": \"14297510\",\r\n    \"password\": \"123456789\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/login",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "active-user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "YXByb2JhZG8=",
+								"description": "Se incluye para aprobar el usuario admin de lo contrario no se incluye debe escribirse en base 64",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"document\": \"14297510\",\r\n    \"email\": \"wsgestor@gmail.com\",\r\n    \"new_password\": \"123456789\",\r\n    \"new_password_confirmation\": \"123456789\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/active-user",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"active-user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "password_recover",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"wsgestor@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/password/email",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"password",
+								"email"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"document\": \"234568825\",\r\n    \"email\": \"wsgestor2@gmail.com\",\r\n    \"password\": \"123456789\",\r\n    \"password_confirmation\": \"123456789\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/register",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "registerApiAll",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"activation\": true,\r\n    \"document\": \"14297510\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/register-service",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"register-service"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "The `/me` endpoints let you manage information about the authenticated user."
+		},
+		{
+			"name": "Contable",
+			"item": [
+				{
+					"name": "contable",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"id_documento\": \"00000004\",\r\n        \"id_comprobante\": 677,\r\n        \"id_nit\": 1529,\r\n        \"fecha\": \"2024-03-19 08:00:00\",\r\n        \"fecha_manual\": \"2024-03-19\",\r\n        \"id_cuenta\": 6156140,\r\n        \"valor\": \"100\",\r\n        \"tipo\": 1,\r\n        \"concepto\": \"ABONO CUENTA TEST VENTAS MOSTRADOR\",\r\n        \"documento_referencia\": \"000001-3\",\r\n        \"token\": \"f55932f7d912352222457841asasas\",\r\n        \"extra\": \"RECIBO_GENERADO_VIA_API\"\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/causacion-contable",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"causacion-contable"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "apibegrandaCuentas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://begranda.com/equilibrium2/public/api/account?eq-auxiliar=1&f-cuenta=13&key={{API_KEY}}&f-nombre=NACIONALES",
+							"protocol": "http",
+							"host": [
+								"begranda",
+								"com"
+							],
+							"path": [
+								"equilibrium2",
+								"public",
+								"api",
+								"account"
+							],
+							"query": [
+								{
+									"key": "eq-auxiliar",
+									"value": "1"
+								},
+								{
+									"key": "f-cuenta",
+									"value": "13"
+								},
+								{
+									"key": "key",
+									"value": "{{API_KEY}}"
+								},
+								{
+									"key": "f-nombre",
+									"value": "NACIONALES"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "apiBegrandaCausacionContable",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://begranda.com/equilibrium2/public/api/document?key={{API_KEY}}",
+							"protocol": "http",
+							"host": [
+								"begranda",
+								"com"
+							],
+							"path": [
+								"equilibrium2",
+								"public",
+								"api",
+								"document"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{API_KEY}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "apiBegrandaGETCausacionContable",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "CentroCostos",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PROVEEDORES",
+			"item": [
+				{
+					"name": "http://begranda.com/equilibrium2/public/api/nits?key={{API_KEY}}&f-nit_1=123&eq-nit_1=123456789",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://begranda.com/equilibrium2/public/api/nits?key={{API_KEY}}&f-nit_1=123&eq-nit_1=123456789",
+							"protocol": "http",
+							"host": [
+								"begranda",
+								"com"
+							],
+							"path": [
+								"equilibrium2",
+								"public",
+								"api",
+								"nits"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{API_KEY}}"
+								},
+								{
+									"key": "f-nit_1",
+									"value": "123"
+								},
+								{
+									"key": "eq-nit_1",
+									"value": "123456789"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "key",
+				"value": "X-API-Key",
+				"type": "string"
+			},
+			{
+				"key": "value",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://farming-simulator.pstmn.io"
+		}
+	]
+}
