@@ -2,16 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Contable;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Validator;
-
-class ContableController extends Controller
-{
-
-    namespace App\Http\Controllers\Api;
-
 use App\Http\Controllers\Controller;
 use App\Models\Contable;
 use Illuminate\Http\Request;
@@ -80,19 +70,19 @@ class ContableController extends Controller
         $bearerToken = $request->input('bearer_token');
 
         // Enviar los datos a la API externa
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $bearerToken,
-        ])->attach(
-            'documents',
-            json_encode($documents)
-        )->post('http://begranda.com/equilibrium2/public/api/document', [
-            'key' => env('API_KEY'),
-        ]);
+        // $response = Http::withHeaders([
+        //     'Authorization' => 'Bearer ' . $bearerToken,
+        // ])->attach(
+        //     'documents',
+        //     json_encode($documents)
+        // )->post('http://begranda.com/equilibrium2/public/api/document', [
+        //     'key' => env('API_KEY'),
+        // ]);
 
         // Verificar la respuesta de la API externa
-        if ($response->failed()) {
-            return response()->json(['error' => 'Error al enviar los documentos a la API externa'], $response->status());
-        }
+        // if ($response->failed()) {
+        //     return response()->json(['error' => 'Error al enviar los documentos a la API externa'], $response->status());
+        // }
         
 
         // Almacenar los documentos en la base de datos
