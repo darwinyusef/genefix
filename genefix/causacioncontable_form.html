@@ -26,7 +26,8 @@
 
     <!-- vendor css -->
     <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/change_loggin.css">
+    <link id="rol_user" rel="stylesheet" href="assets/css/change_loggin.css">
+    <link id="rol_admin" rel="stylesheet" href="assets/css/typeadmin.css">
     <link rel="stylesheet" href="assets/css/child.css">
 </head>
 
@@ -86,21 +87,18 @@
                         <label>Principal</label>
                     </li>
                     <!-- Enlace de Usuarios -->
-                    <li class="pc-item">
-                        <a href="#!" class="pc-link "><span class="pc-micon"><i data-feather="user"></i></span><span
-                                class="pc-mtext">Usuarios</span></a>
-                    </li>
+
 
                     <!-- Enlace de Perfil -->
                     <li class="pc-item">
-                        <a href="#!" class="pc-link "><span class="pc-micon"><i
+                        <a href="./profile-update.html" class="pc-link "><span class="pc-micon"><i
                                     data-feather="user-check"></i></span><span class="pc-mtext">Perfil</span></a>
                     </li>
 
                     <!-- Enlace de Registro -->
                     <li class="pc-item">
-                        <a href="#s" class="pc-link" target="_blank"><span class="pc-micon"><i
-                                    data-feather="user-plus"></i></span><span class="pc-mtext">Registro</span></a>
+                        <a href="./causacioncontable.html" class="pc-link" target="_blank"><span class="pc-micon"><i
+                                    data-feather="user-plus"></i></span><span class="pc-mtext">Causación Contable</span></a>
                     </li>
                 </ul>
             </div>
@@ -127,10 +125,10 @@
                                 <i data-feather="life-buoy"></i>
                                 <span>Support</span>
                             </a>
-                            <a href="#!" class="dropdown-item">
-                                <i data-feather="power"></i>
-                                <span>Logout</span>
-                            </a>
+                            <button onclick="logout()" class="dropdown-item">
+								<i data-feather="power"></i>
+								<span>Logout</span>
+							</button>
                         </div>
                     </li>
                 </ul>
@@ -142,7 +140,7 @@
                             role="button" aria-haspopup="false" aria-expanded="false">
                             <i data-feather="search"></i>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-right pc-h-dropdown drp-search">
+                        <!-- <div class="dropdown-menu dropdown-menu-right pc-h-dropdown drp-search">
                             <form class="px-3">
                                 <div class="form-group mb-0 d-flex align-items-center">
                                     <i data-feather="search"></i>
@@ -150,14 +148,14 @@
                                         placeholder="Search here. . .">
                                 </div>
                             </form>
-                        </div>
+                        </div> -->
                     </li>
                     <li class="dropdown pc-h-item">
                         <a class="pc-head-link dropdown-toggle arrow-none mr-0" data-toggle="dropdown" href="#"
                             role="button" aria-haspopup="false" aria-expanded="false">
-                            <img src="assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar">
+                            <img src="assets/images/user/avatar-5.jpg" alt="user-image" class="user-avtar">
                             <span>
-                                <span class="user-name">Joseph William</span>
+                                <span class="user-name">Yusef</span>
                                 <span class="user-desc">Administrator</span>
                             </span>
                         </a>
@@ -169,22 +167,16 @@
                                 <i data-feather="user"></i>
                                 <span>My Account</span>
                             </a>
-                            <a href="#!" class="dropdown-item">
-                                <i data-feather="settings"></i>
-                                <span>Settings</span>
-                            </a>
+                         
                             <a href="#!" class="dropdown-item">
                                 <i data-feather="life-buoy"></i>
                                 <span>Support</span>
                             </a>
-                            <a href="#!" class="dropdown-item">
-                                <i data-feather="lock"></i>
-                                <span>Lock Screen</span>
-                            </a>
-                            <a href="#!" class="dropdown-item">
-                                <i data-feather="power"></i>
-                                <span>Logout</span>
-                            </a>
+                        
+                            <button onclick="logout()" class="dropdown-item">
+								<i data-feather="power"></i>
+								<span>Logout</span>
+							</button>
                         </div>
                     </li>
                 </ul>
@@ -203,10 +195,10 @@
                     <div class="row align-items-center">
                         <div class="col-md-12">
                             <div class="page-header-title">
-                                <h5 class="m-b-10">Formulario</h5>
+                                <p class="m-b-10">Causaciones Contables | </p>
                             </div>
                             <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="index.html">Contabilidad</a></li>
+                                <li class="breadcrumb-item"><a href="#">Registro</a></li>
                                 <!--li class="breadcrumb-item">Sample Page</li-->
                             </ul>
                         </div>
@@ -220,7 +212,7 @@
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-header">
-                            <h5>Causacion Contable</h5>
+                            <h5>Registrar: Causacion Contable # 1</h5>
                             <div class="card-header-right">
                                 <div class="btn-group card-option">
                                     <button type="button" class="btn dropdown-toggle btn-icon" data-toggle="dropdown"
@@ -248,109 +240,30 @@
                             <div class="container mt-5">
                                 <form>
                                     <div class="row">
-                                        <!-- ID Documento -->
-                                        <div class="form-group col-12">
-                                            <label for="id_documento">ID Documento</label>
-                                            <input type="text" class="form-control" id="id_documento" value="" required>
-                                        </div>
-
-                                        <!-- ID Comprobante -->
-                                        <div class="form-group col-12">
-                                            <div class="form-group">
-                                                <label for="id_comprobante">ID Comprobante</label>
-                                                <select class="form-control" id="selectComprobantes">
-                                                    <option value="">Seleccione un comprobante</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <!-- ID NIT -->
+                                                                              <!-- ID NIT -->
                                         <div class="form-group col-12">
                                             <label for="id_nit">ID NIT</label>
                                             <input type="text" class="form-control" id="id_nit" required>
                                             <div class="invalid-feedback">
-                                                NIT no encontrado.
+                                                NIT No encontrado: Si desea ingresarlo debe comunicarse con el administrador del sistema
                                             </div>
                                             <div class="valid-feedback">
                                                 NIT válido.
                                             </div>
                                         </div>
 
-                                        <!-- Fecha -->
-                                        <!-- <div class="form-group col-12">
-                                            <label for="fecha">Fecha</label>
-                                            <input type="date" class="form-control" id="fecha" value="" required>
-                                        </div> -->
-
+                                       
                                         <!-- Fecha Manual -->
                                         <div class="form-group col-12">
                                             <label for="fecha_manual">Fecha Manual</label>
                                             <input type="date" class="form-control" id="fecha_manual" value="" required>
                                         </div>
 
-
-                                        <!-- Input donde se guarda el ID -->
-                                        <div class="form-group col-12">
-                                            <label for="id_cuenta">ID de la cuenta</label>
-                                            <div class="row correccion">
-                                                <input type="text" class="form-control col-9" id="id_cuenta" readonly>
-                                                <!-- Botón para abrir Modal -->
-                                                <button class="col-3  btn_acciones btn btn-primary" data-toggle="modal"
-                                                    data-target="#modalBuscarCuenta">
-                                                    Buscar Cuenta
-                                                </button>
-
-                                            </div>
-                                        </div>
-
-
-
-                                        <!-- Modal -->
-                                        <div class="modal fade" id="modalBuscarCuenta" tabindex="-1" role="dialog">
-                                            <div class="modal-dialog modal-lg" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title">Buscar Cuenta</h5>
-                                                        <button type="button" class="close"
-                                                            data-dismiss="modal">&times;</button>
-                                                    </div>
-                                                    <div class="modal-body">
-
-                                                        <div class="form-row">
-                                                            <div class="form-group col">
-                                                                <input type="text" id="f_cuenta" name="f-cuenta"
-                                                                    class="form-control" placeholder="Código Cuenta">
-                                                            </div>
-                                                            <div class="form-group col">
-                                                                <input type="text" id="f_nombre" name="f-nombre"
-                                                                    class="form-control" placeholder="Nombre Cuenta">
-                                                            </div>
-                                                            <div class="form-group col">
-                                                                <button class="btn_acciones btn btn-success btn-block"
-                                                                    onclick="buscarCuenta()">Buscar</button>
-                                                            </div>
-                                                        </div>
-
-                                                        <div id="resultadosCuenta"></div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
+                                         
                                         <!-- Valor -->
                                         <div class="form-group col-12">
                                             <label for="valor">Valor</label>
-                                            <input type="number" class="form-control" id="valor" value="" required>
-                                        </div>
-
-                                        <!-- Tipo -->
-                                        <div class="form-group col-12">
-                                            <label for="tipo">Tipo</label>
-                                            <select class="form-control" id="tipo">
-                                                <option value="0">Debito </option>
-                                                <option value="1">Crédito</option>
-                                            </select>
+                                            <input type="text" class="form-control" id="valor" required>
                                         </div>
 
                                         <!-- Concepto -->
@@ -359,31 +272,29 @@
                                             <textarea class="form-control" name="concepto" rows="4"
                                                 id="concepto"></textarea>
                                         </div>
+                                       
 
-                                        <!-- Documento Referencia -->
-                                        <div class="form-group col-12">
-                                            <label for="documento_referencia">Documento Referencia</label>
-                                            <input type="text" class="form-control" id="documento_referencia" value=""
-                                                required>
+                                        <div class="col-md-6 form-group">
+                                            <label  for="extra"><strong>Centro de costos:</strong></label>
+                                            <select id="extra" class="form-control">
+                                            <option value="" disabled selected>Seleccione un centro de costos</option>
+                                            </select>
                                         </div>
+                                        <div class="col-md-6">
+                                            <label><strong>Descripción:</strong></label>
+                                            <p id="descripcionText" class="border p-3 bg-light centrocostos_description">Selecciona un código para ver la descripción.</p>
+                                        </div>
+                                        
 
-                                        <!-- Token -->
-                                        <div class="form-group col-12">
-                                            <label for="token">Token</label>
-                                            <input type="text" class="form-control" id="token" value="" required>
-                                        </div>
-
-                                        <!-- Extra -->
-                                        <div class="form-group col-12">
-                                            <label for="extra">Extra</label>
-                                            <input type="text" class="form-control" id="extra" value="" required>
-                                        </div>
+                                        
 
                                         <!-- Submit Button -->
-                                        <div class="col-12">
+                                        <div class="col-12" style="margin-top: 40px;">
                                             <button type="submit" id="btn_guardar"
-                                                class="btn_acciones btn btn-primary btn-block">Guardar</button>
+                                                class="btn_acciones btn btn-primary btn-block">Guardar esta causación contable</button>
                                         </div>
+
+                                        
                                     </div>
                                 </form>
                             </div>
@@ -402,6 +313,27 @@
     <!-- Input donde se guarda el id seleccionado -->
 
 
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
 
@@ -429,6 +361,22 @@
     <link rel="stylesheet" href="assets/fonts/feather.css">
     <link rel="stylesheet" href="assets/fonts/fontawesome.css">
     <link rel="stylesheet" href="assets/css/customizer.css">
+    <script src="assets/js/logout.js"></script>
+
+    <script>
+        const inputFecha = document.getElementById('fecha_manual');
+        const today = new Date();
+
+        // Primer día del mes actual
+        const primerDia = new Date(today.getFullYear(), today.getMonth(), 1);
+        // Último día del mes actual
+        const ultimoDia = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+        const formato = (date) => date.toISOString().split('T')[0];
+
+        inputFecha.min = formato(primerDia);   // Ej: "2025-04-01"
+        inputFecha.max = formato(ultimoDia);   // Ej: "2025-04-30"
+    </script>
 </body>
 
 </html>

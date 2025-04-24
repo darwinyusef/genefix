@@ -1,7 +1,7 @@
 :root {
-  --rojogenefix: #bb214b;
-  --azulgenefix: #19adc5;
-  --azulgenefix_dark: #157685;
+  --rojogenefix: #0a0204;
+  --azulgenefix: #0f505a;
+  --azulgenefix_dark: #061c1f;
 }
 
 .auth-wrapper {
@@ -56,7 +56,7 @@
 }
 
 .pc-sidebar {
-  background: #721631;
+  background: #420f1e;
 }
 
 .pc-sidebar .pc-caption {
@@ -70,7 +70,7 @@
 }
 
 .pc-sidebar .m-header {
-  background: #28161b;
+  background: #130b0d;
 }
 
 .btn_acciones {
@@ -79,63 +79,6 @@
 }
 
 .btn_acciones:hover {
-  background: #28161b !important;
+  background: #10090b !important;
   color: #ffffff !important;
-}
-
-.bg-transparent {
-  background: transparent !important;
-  font-size: 36px;
-  width: auto;
-  width: 210px;
-  border: 0px;
-  text-align: center;
-  box-shadow: 3px 1px 34px -12px rgba(0, 0, 0, 0.63);
-  -webkit-box-shadow: 3px 1px 34px -12px rgba(0, 0, 0, 0.63);
-  -moz-box-shadow: 3px 1px 34px -12px rgba(0, 0, 0, 0.63);
-  border-radius: 10px;
-  margin-bottom: 30px;
-}
-
-.homecausation {
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.clearbadge {
-  font-size: 12px;
-  padding: 5px;
-}
-
-.rcontale {
-  border: 1px solid lightgray;
-  border-radius: 10px;
-}
-
-.rcontale.empty {
-  border: 1px solid lightgray;
-  background-color: rgb(255, 247, 249);
-  border-radius: 10px;
-}
-
-.rcontale.clean {
-  border: 1px solid lightgray;
-  background-color: white;
-  border-radius: 10px;
-}
-
-.rcontale.empty:hover {
-  border: 1px solid var(--rojogenefix);
-  background-color: #fff0f2;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
-}
-
-.rcontale.clean:hover {
-  border: 1px solid var(--rojogenefix);
-  background-color: #ebfbfc;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
 }

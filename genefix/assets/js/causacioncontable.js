@@ -45,7 +45,7 @@ inputNit.addEventListener('input', async function () {
                     // No encontrado
                     this.classList.remove('is-valid');
                     this.classList.add('is-invalid');
-                    console.log('NIT no encontrado');
+                    console.log('NIT no encontrado: Si desea ingresarlo debe comunicarse con el administrador del sistema');
                 }
                 // Objeto con claves dinámicas "1", "2", "3"...
 
@@ -68,6 +68,50 @@ inputNit.addEventListener('input', async function () {
         this.classList.remove('is-invalid');
     }
 });
+
+function formatCOP(value) {
+    const number = parseInt(value.replace(/\D/g, '')) || 0;
+    return number.toLocaleString('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 });
+}
+
+const valorInput = document.getElementById('valor');
+
+valorInput.addEventListener('blur', () => {
+    valorInput.value = formatCOP(valorInput.value);
+});
+
+valorInput.addEventListener('focus', () => {
+    // Al enfocar, remover el formato para que sea más fácil editar
+    valorInput.value = valorInput.value.replace(/\D/g, '');
+});
+
+function mostrarVistaPrevia() {
+    const input = document.getElementById('archivoInput');
+    const vistaPrevia = document.getElementById('vistaPreviaArchivo');
+    const nombreArchivo = document.getElementById('nombreArchivo');
+    const archivo = input.files[0];
+
+    if (archivo) {
+        vistaPrevia.style.display = 'block';
+        vistaPrevia.innerText = `Archivo seleccionado: ${archivo.name} (${(archivo.size / 1024).toFixed(1)} KB)`;
+        nombreArchivo.innerText = archivo.name;
+    } else {
+        vistaPrevia.style.display = 'none';
+        vistaPrevia.innerText = '';
+        nombreArchivo.innerText = '';
+    }
+}
+
+function enviarArchivo() {
+    const input = document.getElementById('archivoInput');
+    if (!input.files.length) {
+        alert('Por favor seleccione un archivo antes de enviar.');
+        return;
+    }
+
+    alert('Archivo enviado correctamente: ' + input.files[0].name);
+    $('#adjuntarArchivoModal').modal('hide');
+}
 
 const cargarComprobantes = async () => {
     try {
@@ -207,21 +251,74 @@ function validarCampo(id, mensaje, tipo = 'text') {
 }
 
 
+function validarConcepto() {
+    const campo = document.getElementById("concepto");
+    const mensajeError = document.getElementById("conceptoError");
+    const texto = campo.value.trim();
+    const palabras = texto.split(/\s+/).filter(Boolean);
+    const cantidadPalabras = palabras.length;
+
+    let error = "";
+
+    if (cantidadPalabras < 20) {
+        error = "Debe tener al menos 20 palabras.";
+    } else if (cantidadPalabras > 200) {
+        error = "No puede tener más de 200 palabras.";
+    } else if (texto === "") {
+        error = "Este campo es obligatorio.";
+    }
+
+    if (error !== "") {
+        campo.classList.add("is-invalid");
+        mensajeError.textContent = error;
+        return false;
+    } else {
+        campo.classList.remove("is-invalid");
+        campo.classList.add("is-valid");
+        mensajeError.textContent = "";
+        return true;
+    }
+}
+
+
+function centroCostos() {
+    const select = document.getElementById('extra');
+    const descripcion = document.getElementById('descripcionText');
+
+    fetch('/assets/js/centroCostos.json')
+        .then((res) => res.json())
+        .then((res) => {
+            console.log(res);
+            res.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.codigo;
+                option.textContent = `${item.codigo} - ${item.nombre}`;
+                select.appendChild(option);
+            });
+
+            select.addEventListener('change', function () {
+                const seleccionado = res.find(item => item.codigo === this.value);
+                descripcion.textContent = seleccionado ? seleccionado.descripcion : 'Descripción no disponible.';
+            });
+        })
+        .catch((e) => {
+            console.error('Error al cargar los centros de costos:', e);
+        });
+} centroCostos();
+
+
 document.getElementById("btn_guardar").addEventListener("submit", async (e) => {
     e.preventDefault();
 
+    if (!validarConcepto()) {
+        e.preventDefault(); // Evita que se envíe el formulario
+    }
+
     const camposValidos =
-        validarCampo('id_documento', 'El documento es obligatorio', 'num') &
-        validarCampo('selectComprobantes', 'El comprobante es obligatorio', 'num') &
         validarCampo('id_nit', 'El NIT es obligatorio', 'num') &
-        validarCampo('fecha', 'La fecha es obligatoria') &
         validarCampo('fecha_manual', 'La fecha manual es obligatoria') &
-        validarCampo('id_cuenta', 'La cuenta es obligatoria', 'num') &
         validarCampo('valor', 'El valor es obligatorio', 'num') &
-        validarCampo('tipo', 'El tipo es obligatorio', 'num') &
         validarCampo('concepto', 'El concepto es obligatorio') &
-        validarCampo('documento_referencia', 'El documento referencia es obligatorio') &
-        validarCampo('token', 'El token es obligatorio') &
         validarCampo('extra', 'El extra es obligatorio');
 
     if (!camposValidos) {
@@ -233,17 +330,17 @@ document.getElementById("btn_guardar").addEventListener("submit", async (e) => {
     const datos = {
         documents: [
             {
-                id_documento: document.getElementById("id_documento").value.trim(),
-                id_comprobante: document.getElementById("selectComprobantes").value.trim(),
+                // id_documento: document.getElementById("id_documento").value.trim(),
+                // id_comprobante: document.getElementById("selectComprobantes").value.trim(),
                 id_nit: document.getElementById("id_nit").value.trim(),
                 fecha: obtenerFechaActual().trim(),
                 fecha_manual: document.getElementById("fecha_manual").value.trim(),
-                id_cuenta: document.getElementById("id_cuenta").value.trim(),
+                // id_cuenta: document.getElementById("id_cuenta").value.trim(), //6068094  110510	CAJAS MENORES
                 valor: document.getElementById("valor").value.trim(),
-                tipo: document.getElementById("tipo").value.trim(),
+                tipo: 1,
                 concepto: document.getElementById("concepto").value.trim(),
-                documento_referencia: document.getElementById("documento_referencia").value.trim(),
-                token: document.getElementById("token").value.trim(),
+                // documento_referencia: document.getElementById("documento_referencia").value.trim(),
+                // token: document.getElementById("token").value.trim(),
                 extra: document.getElementById("extra").value.trim()
             }
         ]

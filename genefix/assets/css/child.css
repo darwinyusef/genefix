@@ -112,3 +112,9 @@
   bottom: 20px;
   right: 20px;
 }
+
+.centrocostos_description {
+  max-height: 100px;
+  height: auto;
+  overflow-y: scroll;
+}
