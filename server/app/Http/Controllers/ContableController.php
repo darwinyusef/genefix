@@ -6,52 +6,48 @@ use App\Http\Controllers\Controller;
 use App\Models\Contable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Http;
 
 class ContableController extends Controller
 {
-    public function store(Request $request)
+    public function nitFilter(Request $request)
     {
-        // Validar la API_KEY
-        if ($request->query('key') !== env('API_KEY')) {
-            return response()->json(['error' => 'API_KEY inválida'], 403);
-        }
-
-        // Validar que el campo 'documents' exista y sea una cadena JSON válida
+        // Validar los datos entrantes
         $validator = Validator::make($request->all(), [
-            'documents' => 'required|string',
+            'nit' => 'required|string',
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['error' => 'Campo "documents" faltante o inválido'], 400);
+            return response()->json(['error' => $validator->errors()], 400);
         }
 
-        // Decodificar la cadena JSON del campo 'documents'
-        $documentosData = json_decode($request->input('documents'), true);
+        // Obtener el NIT del cuerpo de la solicitud
+        $nit = $request->input('nit');
 
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            return response()->json(['error' => 'Error al decodificar JSON: ' . json_last_error_msg()], 400);
+        // Realizar la consulta a la API externa
+        //http://begranda.com/equilibrium2/public/api/nits?key=${API_KEY}&f-nit_1=123&eq-nit_1=${valor}
+        $response = Http::get('http://begranda.com/equilibrium2/public/api/nits', [
+            'key' => env('BEGRANDA_EAPI_KEY'),
+            'f-nit_1=123' => '123',
+            'eq-nit_1' => $nit,
+        ]);
+
+        // Verificar la respuesta de la API externa
+        if ($response->failed()) {
+            return response()->json(['error' => 'Error al obtener el NIT de la API externa'], $response->status());
         }
 
-        // Procesar y almacenar cada documento en la base de datos
-        foreach ($documentosData as $documentoData) {
-            Contable::create([
-                'id_documento' => $documentoData['id_documento'],
-                'id_comprobante' => $documentoData['id_comprobante'],
-                'id_nit' => $documentoData['id_nit'],
-                'fecha' => $documentoData['fecha'],
-                'fecha_manual' => $documentoData['fecha_manual'],
-                'id_cuenta' => $documentoData['id_cuenta'],
-                'valor' => $documentoData['valor'],
-                'tipo' => $documentoData['tipo'],
-                'concepto' => $documentoData['concepto'],
-                'documento_referencia' => $documentoData['documento_referencia'],
-                'token' => $documentoData['token'],
-                'extra' => $documentoData['extra'],
-            ]);
-        }
-
-        return response()->json(['message' => 'Documentos procesados y almacenados exitosamente.'], 201);
+        // Devolver la respuesta de la API externa
+        return response()->json($response->json());
     }
+
+    
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
 
     public function enviarDocumentos(Request $request)
     {
@@ -83,7 +79,7 @@ class ContableController extends Controller
         // if ($response->failed()) {
         //     return response()->json(['error' => 'Error al enviar los documentos a la API externa'], $response->status());
         // }
-        
+
 
         // Almacenar los documentos en la base de datos
         foreach ($documents as $doc) {

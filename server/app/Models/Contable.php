@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Contable extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'id_documento',
         'id_comprobante',

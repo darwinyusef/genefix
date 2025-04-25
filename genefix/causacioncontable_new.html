@@ -36,6 +36,15 @@
 </head>
 
 <body class="">
+
+    <div class="loader-wrapper">
+        <span class="loader"></span>
+    </div>
+
+    <div id="alerta" class="alert animate__animated" role="alert" style="display: none;">
+        A simple primary alert—check it out!
+    </div>
+
     <!-- [ Pre-loader ] start -->
     <div class="loader-bg">
         <div class="loader-track">
@@ -229,19 +238,11 @@
                                         </p>
 
 
-                                        <button type="button" class="btn btn-primary" data-toggle="modal"
-                                            data-target=".bd-example-modal-sm">Crear una nueva causación
-                                            contable</button>
+                                        <!-- <button type="button" class="btn btn-primary">Crear una nueva causación
+                                            contable</button> -->
 
 
-                                        <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog"
-                                            aria-labelledby="mySmallModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-sm">
-                                                <div class="modal-content">
-                                                    ...
-                                                </div>
-                                            </div>
-                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -254,12 +255,14 @@
                         <div class="card-header">
                             <h5>Habilitar Listado de causaciones <button type="button"
                                     class="btn btn-primary clearbadge">
-                                    Usted ha creado <span class="badge badge-light">4</span>
+                                    Usted ha creado <span id="total" class="badge badge-light">0</span>
                                 </button> <button type="button" class="btn btn-danger clearbadge"> Crear Nuevo Registro
                                 </button>
                             </h5>
                         </div>
                         <div class="card-body">
+                            <div class="row" id="contenedor-cards"></div>
+                            <!-- 
                             <div class="row">
                                 <div class="col-sm-4">
                                     <div class="card rcontale clean">
@@ -271,72 +274,15 @@
                                     </div>
 
                                 </div>
-                                <div class="col-sm-4">
-                                    <div class="card rcontale">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Registro contable Finalizado</h5>
-                                            <button class="btn  btn-primary clearbadge">Ver más</button>
-                                            <button class="btn  btn-danger clearbadge">Borrarlo</button>
-                                        </div>
-                                    </div>
+                              
+                            </div> -->
 
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="card rcontale">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Registro contable Finalizado</h5>
-                                            <button class="btn  btn-primary clearbadge">Ver más</button>
-                                            <button class="btn  btn-danger clearbadge">Borrarlo</button>
-                                        </div>
-                                    </div>
 
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="card rcontale">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Registro contable Finalizado</h5>
-                                            <button class="btn  btn-primary clearbadge">Ver más</button>
-                                            <button class="btn  btn-danger clearbadge">Borrarlo</button>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="card rcontale">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Registro contable Finalizado</h5>
-                                            <button class="btn  btn-primary clearbadge">Ver más</button>
-                                            <button class="btn  btn-danger clearbadge">Borrarlo</button>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="card rcontale">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Registro contable Finalizado</h5>
-                                            <button class="btn  btn-primary clearbadge">Ver más</button>
-                                            <button class="btn  btn-danger clearbadge">Borrarlo</button>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="card rcontale">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Registro contable Finalizado</h5>
-                                            <button class="btn  btn-primary clearbadge">Ver más</button>
-                                            <button class="btn  btn-danger clearbadge">Borrarlo</button>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
                             <div class="row">
                                 <div class="col-md-12 homecausation">
                                     <button type="button" class="btn btn-primary text-center" data-toggle="modal"
                                         data-target="#adjuntarArchivoModal">
-                                        Enviar al sistema contable <span class="badge badge-light">4</span>
+                                        Enviar al sistema contable <span id="total2" class="badge badge-light">0</span>
                                     </button>
                                 </div>
                             </div>
@@ -445,7 +391,7 @@
     <script src="assets/js/uikit.min.js"></script>
 
     <script src="assets/js/plugins/apexcharts.min.js"></script>
-
+    <script src="assets/js/datoscausacion.js"></script>
     <script src="assets/js/logout.js"></script>
 
     <script>

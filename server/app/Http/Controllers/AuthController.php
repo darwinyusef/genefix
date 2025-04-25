@@ -5,17 +5,24 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-
+// information
 use function Laravel\Prompts\password;
 
 class AuthController extends Controller
 {
 
+    function generarCodigoAleatorio($longitud = 10)
+    {
+        return strtoupper(Str::random($longitud));
+    }
+
     public function checkDocument(Request $request)
     {
+        
         $validator = Validator::make($request->all(), [
             'documento' => 'required|string',
         ]);
@@ -23,21 +30,67 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
-
+        // validar el code admin
+        $headerValue = $request->header('Authorization');
+        $salida = base64_decode($headerValue);
+        // evaluar el rol   
         $user = User::where('document', $request->documento)->first();
+        // obtener la configuracion de la base de datos e igualar el value
+        $aprobado = DB::table('configuracions')->where('value','aprobar')->first();
+        
+        // comparar las salidas y evaluar la misma
+        if ($salida === $aprobado->state) {
+            $authorization  = $this->generarCodigoAleatorio(); 
+        } else {
+            $authorization = $salida;
+        }
+
         if ($user) {
             return response()->json(['res' => true, "ms" => "El documento ya está registrado. Inicie sesión."]);
         } else {
-            return response()->json(['res' => false, 'ms' => 'El documento no está registrado. Complete el registro con su correo y contraseña.']);
+            return response()->json([
+                'res' => false,
+                'ms' => 'El documento no está registrado. Complete el registro con su correo y contraseña.',
+                'code' => $authorization
+            ]);
         }
     }
 
 
     public function activeUser(Request $request)
     {
+        $headerValue = $request->header('Authorization');
+        $salida = base64_decode($headerValue);
+        $rolfin = "user";
+        $user = User::where('document', $request->document)->first();
+
+        if ($user) {
+            if ($user->rol == null) {
+                $user->rol = $rolfin;
+            }
+
+            if ($salida === 'aprobado') {
+                $rolfin = "admin";
+                $user->rol = $rolfin;
+            }
+            $user->save();
+            $token = $user->createToken('authToken')->accessToken;
+            return response()->json([
+                "res" => true,
+                "ms" => "El rol del usuario ha sido activado correctamente.",
+                "user" => $user,
+                'access_token' => $token,
+                'token_type' => 'Bearer'
+            ]);
+        }
+
+        // 
+        if ($user) {
+            return response()->json(['message' => 'Documento no encontrado.'], 404);
+        }
         /* $headerValue = $request->header('Authorization');
         $salida = base64_encode($headerValue); */
-        $rolfin = "user";
+
         $validator = Validator::make($request->all(), [
             'document' => 'required|string',
             'email' => 'required|string',
@@ -48,13 +101,10 @@ class AuthController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $user = User::where('document', $request->document)->first();
+
         if (!$user) {
             return response()->json(['message' => 'Documento no encontrado.'], 404);
         }
-
-        $headerValue = $request->header('Authorization');
-        $salida = base64_decode($headerValue);
 
         if ($salida === 'aprobado') {
             $rolfin = "admin";
@@ -79,7 +129,8 @@ class AuthController extends Controller
         ]);
     }
 
-    public function login(Request $request)    {
+    public function login(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'document' => 'required|string',
             'password' => 'required|string',
@@ -89,18 +140,18 @@ class AuthController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $user = User::where('document', $request->document)->first();
+        if (Auth::attempt(['document' => $request->document, 'password' => $request->password])) {
+            $auth = Auth::user(); // Este es el modelo User
+            $user = User::where('document', $auth->document)->first();
+            if (!$user) {
+                return response()->json(['message' => 'Documento no encontrado.'], 404);
+            }
+            $token = $user->createToken('AccessToken')->accessToken;
 
-        if (!$user) {
-            return response()->json(['message' => 'Documento no encontrado.'], 404);
-        }
-
-        if (Auth::attempt(['document' => "14297510", 'password' => "123456789"])) {
-            $token = $user->createToken('authToken')->accessToken;
             return response()->json([
                 'access_token' => $token,
                 'token_type' => 'Bearer',
-                "user" => $user
+                "user" => Auth::user()
             ]);
         }
 
