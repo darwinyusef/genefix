@@ -1,5 +1,7 @@
 <?php
 
+
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
 (new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
@@ -22,6 +24,33 @@ date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
 $app = new Laravel\Lumen\Application(
     dirname(__DIR__)
 );
+
+
+
+// Cargar la configuración de vistas y habilitar Blade
+$app->singleton('view', function ($app) {
+    // Definir la ruta donde están tus vistas Blade
+    $viewPath = base_path('resources/views');
+    
+    // Crear un sistema de archivos
+    $fileSystem = new Filesystem();
+
+    // Cargar las vistas con Blade
+    $viewFinder = new FileViewFinder($fileSystem, [$viewPath]);
+    $cache = storage_path('framework/views'); // Ruta donde se almacenarán las vistas compiladas
+    $compiler = new BladeCompiler($fileSystem, $cache);
+
+    // Crear un EngineResolver y registrar el CompilerEngine
+    $engineResolver = new Illuminate\View\Engines\EngineResolver();
+    $engineResolver->register('blade', function () use ($compiler) {
+        return new CompilerEngine($compiler);
+    });
+
+    // Fábrica de vistas
+    $viewFactory = new Factory($engineResolver, $viewFinder, $app['events']);
+    
+    return $viewFactory;
+});
 
 $app->withFacades();
 
