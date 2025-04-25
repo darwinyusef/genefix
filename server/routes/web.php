@@ -20,39 +20,37 @@ use App\Http\Controllers\PasswordResetController;
 
 $router->get('/', function () use ($router) {
     return response()->json([
-        "error" => "Bienvenido a nuestra API Dios Consejero",
+        "error" => "Bienvenido a nuestra API GeneFIX",
         "authorization" => "Usted no tiene permisos",
         "code" => 404
     ], 404);
 });
 
-// Rutas públicas
-$router->post('/check-document', 'AuthController@checkDocument');
-$router->post('/active-user', 'AuthController@activeUser');
-$router->post('/login', 'AuthController@login');
-$router->post('/register', 'AuthController@register');
-$router->get('/register-service', 'AuthController@serviceRegister');
+$router->post('/check-document', ['uses' => 'AuthController@checkDocument']);
+$router->post('/active-user', ['uses' => 'AuthController@activeUser']);
+$router->post('/login', ['uses' => 'AuthController@login']);
+$router->post('/register', ['uses' => 'AuthController@register']);
+$router->get('/register-service', ['uses' => 'AuthController@serviceRegister']);
 
-$router->post('/password/email', 'PasswordResetController@sendResetLinkEmail');
-$router->post('/password/reset', 'PasswordResetController@resetPassword');
-$router->post('/forgot-username', 'PasswordResetController@forgotUsername');
+$router->post('/password/email', ['uses' => 'PasswordResetController@sendResetLinkEmail']);
+$router->post('/password/reset', ['uses' => 'PasswordResetController@resetPassword']);
+$router->post('/forgot-username', ['uses' => 'PasswordResetController@forgotUsername']);
 
-// Ruta POST comentada que usaba Passport (de momento desactivada)
-// $router->post('/causacion-contable', 'ContableController@store');
+// $router->post('/causacion-contable', ['uses' => 'ContableController@store']); // ← Comentada (era con Passport)
 
 $router->post('/subir', ['uses' => 'CausacionContableController@sendingFile', 'as' => 'sending.archivo']);
 $router->get('/fileroute', ['uses' => 'CausacionContableController@getRoute', 'as' => 'get.route']);
 $router->get('/nit', ['uses' => 'ContableController@nitFilter', 'as' => 'get.nit.filter']);
 
-// Rutas protegidas (JWT)
-$router->group(['middleware' => 'auth'], function () use ($router) {
-    $router->get('/user', 'AuthController@user');
-    $router->post('/logout', 'AuthController@logout');
 
-    // En Lumen no hay apiResource directamente, hay que declararlas una por una
-    $router->get('/causacion-contable', 'CausacionContableController@index');
-    $router->post('/causacion-contable', 'CausacionContableController@store');
-    $router->get('/causacion-contable/{id}', 'CausacionContableController@show');
-    $router->put('/causacion-contable/{id}', 'CausacionContableController@update');
-    $router->delete('/causacion-contable/{id}', 'CausacionContableController@destroy');
+$router->group(['middleware' => 'auth'], function () use ($router) {
+    $router->get('/user', ['uses' => 'AuthController@user']);
+    $router->post('/logout', ['uses' => 'AuthController@logout']);
+
+    // CRUD manual para causacion-contable
+    $router->get('/causacion-contable', ['uses' => 'CausacionContableController@index']);
+    $router->post('/causacion-contable', ['uses' => 'CausacionContableController@store']);
+    $router->get('/causacion-contable/{id}', ['uses' => 'CausacionContableController@show']);
+    $router->put('/causacion-contable/{id}', ['uses' => 'CausacionContableController@update']);
+    $router->delete('/causacion-contable/{id}', ['uses' => 'CausacionContableController@destroy']);
 });

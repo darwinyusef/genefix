@@ -4,14 +4,30 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Model;
+use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 
-class User extends Model
+class User extends Model implements AuthenticatableContract, JWTSubject
 {
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
+    use Authenticatable;
+
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [
+            'email' => $this->email,
+            'name' => $this->name,
+            'role' => $this->role ?? 'user',
+            'document' => $this->document
+        ];
+    }
+
     protected $fillable = [
         'name',
         'document',
@@ -29,11 +45,6 @@ class User extends Model
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [

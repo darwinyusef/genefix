@@ -4,16 +4,38 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-// information
-use function Laravel\Prompts\password;
+use Tymon\JWTAuth\Facades\JWTAuth;
+
 
 class AuthController extends Controller
 {
+
+    public function login(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|string|email',
+            'password' => 'required|string',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $credentials = $request->only(['email', 'password']);
+
+        if (!$token = JWTAuth::attempt($credentials)) {
+            return response()->json(['error' => 'Credenciales inválidas'], 401);
+        }
+
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => JWTAuth::factory()->getTTL() * 60
+        ]);
+    }
 
     function generarCodigoAleatorio($longitud = 10)
     {
@@ -22,7 +44,7 @@ class AuthController extends Controller
 
     public function checkDocument(Request $request)
     {
-        
+
         $validator = Validator::make($request->all(), [
             'documento' => 'required|string',
         ]);
@@ -36,11 +58,11 @@ class AuthController extends Controller
         // evaluar el rol   
         $user = User::where('document', $request->documento)->first();
         // obtener la configuracion de la base de datos e igualar el value
-        $aprobado = DB::table('configuracions')->where('value','aprobar')->first();
-        
+        $aprobado = DB::table('configuracions')->where('value', 'aprobar')->first();
+
         // comparar las salidas y evaluar la misma
         if ($salida === $aprobado->state) {
-            $authorization  = $this->generarCodigoAleatorio(); 
+            $authorization  = $this->generarCodigoAleatorio();
         } else {
             $authorization = $salida;
         }
@@ -55,7 +77,6 @@ class AuthController extends Controller
             ]);
         }
     }
-
 
     public function activeUser(Request $request)
     {
@@ -129,35 +150,12 @@ class AuthController extends Controller
         ]);
     }
 
-    public function login(Request $request)
+    public function userA()
     {
-        $validator = Validator::make($request->all(), [
-            'document' => 'required|string',
-            'password' => 'required|string',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        if (Auth::attempt(['document' => $request->document, 'password' => $request->password])) {
-            $auth = Auth::user(); // Este es el modelo User
-            $user = User::where('document', $auth->document)->first();
-            if (!$user) {
-                return response()->json(['message' => 'Documento no encontrado.'], 404);
-            }
-            $token = $user->createToken('AccessToken')->accessToken;
-
-            return response()->json([
-                'access_token' => $token,
-                'token_type' => 'Bearer',
-                "user" => Auth::user()
-            ]);
-        }
-
-        return response()->json(['message' => 'Credenciales inválidas.'], 401);
+        return response()->json(auth()->user());
     }
 
+    
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [

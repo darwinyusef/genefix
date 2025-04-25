@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 (new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
     dirname(__DIR__)
@@ -59,7 +59,8 @@ $app->singleton(
 |
 */
 
-$app->configure('app');
+// $app->configure('app');
+$app->configure('auth');
 
 /*
 |--------------------------------------------------------------------------
@@ -80,6 +81,10 @@ $app->routeMiddleware([
     'auth' => App\Http\Middleware\Authenticate::class,
 ]);
 
+// También esto si no lo tenés
+class_alias(Tymon\JWTAuth\Facades\JWTAuth::class, 'JWTAuth');
+class_alias(Tymon\JWTAuth\Facades\JWTFactory::class, 'JWTFactory');
+
 /*
 |--------------------------------------------------------------------------
 | Register Service Providers
@@ -95,6 +100,8 @@ $app->routeMiddleware([
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
+$app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
+
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes
@@ -109,12 +116,16 @@ $app->routeMiddleware([
 $app->router->group([
     'namespace' => 'App\Http\Controllers',
 ], function ($router) {
-    require __DIR__.'/../routes/web.php';
+    require __DIR__ . '/../routes/web.php';
 });
 
 // Registrar el middleware CORS de forma global
 $app->middleware([
     \Illuminate\Http\Middleware\HandleCors::class
+]);
+
+$app->routeMiddleware([
+    'auth' => App\Http\Middleware\Authenticate::class,
 ]);
 
 return $app;
